@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Список пользователей</title>
+</head>
+<body>
+
+<table width="70%" cellspacing="0" cellpadding="4" border="1" align="center">
+
+  <tr>
+    <th>№ пользователя</th>
+    <th>Имя</th>
+    <th>Фамилия</th>
+    <th>Возраст</th>
+    <th>Курение</th>
+    <th>Операции над пользователем</th>
+  </tr>
+
+
+
+  <tr th:each="user : ${users}">
+
+    <td th:utext="${user.id}">id</td>
+    <td th:utext="${user.name}">name</td>
+    <td th:utext="${user.lastname}">lastname</td>
+    <td th:utext="${user.age}">age</td>
+    <td th:utext="${user.smoking}">smoking</td>
+    <td>
+      <button
+            type="button"
+            th:onclick="|window.location.href='users/edit?id=' + ${user.getId()}|">Изменить пользователя</button>
+      <button
+              type="button"
+              th:onclick="|window.location.href='users/delete?id=' + ${user.getId()}|" >Удалить пользователя</button>
+
+    </td>
+  </tr>
+
+</table>
+
+<br>
+
+<div class="row" align="center">
+  <div class="col-sm-6">
+    <button type="button"
+            id="addButton"
+            class="btn btn-primary"
+            onclick="window.location.href='users/new'">Добавить пользователя</button>
+  </div>
+</div>
+
+</body>
+</html>
