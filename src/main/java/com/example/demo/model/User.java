@@ -1,9 +1,10 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
-@Table(name = "userstable")
+@Table(name = "users")
 public class User {
     public User() {
 
@@ -40,6 +41,14 @@ public class User {
     private int age;
     @Column(name = "smoking")
     private boolean smoking;
+
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Collection<Role> roles;
+
+
 
     public int getId() {
         return id;
