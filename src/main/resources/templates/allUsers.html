@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Список пользователей</title>
+</head>
+<body>
+
+<div class="float" align="right" sec:authorize="isAuthenticated()">
+  <form  th:action="@{/logout}" method="post">
+    <input type="submit" value="Выйти">
+  </form>
+</div>
+
+<table width="70%" cellspacing="0" cellpadding="4" border="1" align="center">
+
+  <tr>
+    <th>№ пользователя</th>
+    <th>Имя пользователя</th>
+    <th>Имя</th>
+    <th>Фамилия</th>
+    <th>Возраст</th>
+    <th>Пароль</th>
+    <th>Операции над пользователем</th>
+  </tr>
+
+  <tr th:each="user : ${users}">
+
+    <td th:utext="${user.id}">id</td>
+    <td th:utext="${user.username}">username</td>
+    <td th:utext="${user.name}">name</td>
+    <td th:utext="${user.lastname}">lastname</td>
+    <td th:utext="${user.age}">age</td>
+    <td th:utext="${user.password}">password</td>
+
+    <td>
+      <div align="center">
+      <button
+              type="button"
+              th:onclick="|window.location.href='admin/id=' + ${user.getId()}|" >Просмотреть страницу пользователя</button>
+      </div>
+      <br>
+      <div align="center">
+      <button
+              type="button"
+              th:onclick="|window.location.href='admin/edit/id=' + ${user.getId()}|">Изменить пользователя</button>
+      </div>
+      <br>
+      <div align="center">
+      <button
+              type="button"
+              th:onclick="|window.location.href='admin/delete/id=' + ${user.getId()}|" >Удалить пользователя</button>
+      </div>
+    </td>
+  </tr>
+
+</table>
+
+<br>
+
+<div class="row" align="center">
+  <div class="col-sm-6">
+    <button type="button"
+            id="addButton"
+            class="btn btn-primary"
+            onclick="window.location.href='admin/new'">Добавить пользователя</button>
+  </div>
+</div>
+
+</body>
+</html>
