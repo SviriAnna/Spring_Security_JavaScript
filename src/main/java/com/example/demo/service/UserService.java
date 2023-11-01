@@ -7,13 +7,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
     User getUserById(Long id);
     User getUserByName(String username);
     List<User> getAllUsers();
-    void saveUser(User user);
+    void saveUser(String id, User user, Map<String, String> form);
     void delete(Long id);
 
     public void saveNewUser(User user);

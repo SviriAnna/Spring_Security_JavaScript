@@ -4,12 +4,12 @@ import com.example.demo.model.User;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -21,9 +21,13 @@ public class AdminsController {
     @Autowired
     private final RoleService roleService;
 
-    private AdminsController(UserService userService, RoleService roleService) {
+    @Autowired
+    private final PasswordEncoder encoder;
+
+    private AdminsController(UserService userService, RoleService roleService, PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.encoder = encoder;
     }
 
     @GetMapping()
@@ -43,53 +47,28 @@ public class AdminsController {
     }
 
     @PostMapping("/save")
-    private String save(@RequestParam String username,
-                        @RequestParam String name,
-                        @RequestParam String lastname,
-                        @RequestParam int age,
-                        @RequestParam String password,
+    private String save(@ModelAttribute("user") User user,
                         @RequestParam Map<String, String> form,
                         @RequestParam("id") String id) {
-        User user = new User();
-        if(!Objects.equals(id, "")){
-            user = userService.getUserById(Long.valueOf(id));
-        }
-        user.setUsername(username);
-        user.setName(name);
-        user.setLastname(lastname);
-        user.setAge(age);
-        user.setPassword(password);
 
-        Set<String> roles = Arrays.stream(roleService.getAllRoles().toArray())
-                .map(Object::toString)
-                .collect(Collectors.toSet());
-
-        user.getRoles().clear();
-
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(roleService.getRoleByName(key));
-            }
-        }
-
-        userService.saveUser(user);
+        userService.saveUser(id, user, form);
 
         return "redirect:/admin";
     }
 
     @GetMapping("/edit/id={id}")
     private String editUser(@PathVariable(name = "id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAllRoles());
 
         return "creature_and_edit_user";
     }
 
     @GetMapping("/new")
-    private String editUser(Model model) {
+    private String creatureUser(Model model) {
         User user = new User();
-        model.addAttribute("user", user
-        );
+        model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAllRoles());
 
         return "creature_and_edit_user";

@@ -5,12 +5,12 @@ import com.example.demo.dao.UserDao;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,20 +20,47 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final RoleDao roleDao;
 
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
+    @Autowired
+    private final PasswordEncoder encoder;
+
+    public UserServiceImpl(UserDao userDao, RoleDao roleDao, PasswordEncoder encoder) {
         this.userDao = userDao;
         this.roleDao = roleDao;
+        this.encoder = encoder;
     }
 
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
-
     @Override
     @Transactional
-    public void saveUser(User user) {
-        userDao.saveUser(user);
+    public void saveUser(String idString, User user, Map<String, String> form) {
+        User savedUser = new User();
+        if(!Objects.equals(idString, "")){
+            Long id = Long.valueOf(idString);
+            user = userDao.getUserById(id);
+            savedUser.setId(id);
+        }
+        savedUser.setUsername(user.getUsername());
+        savedUser.setName(user.getName());
+        savedUser.setLastname(user.getLastname());
+        savedUser.setAge(user.getAge());
+        savedUser.setPassword(encoder.encode(user.getPassword()));
+
+        Set<String> roles = Arrays.stream(roleDao.getAllRoles().toArray())
+                .map(Object::toString)
+                .collect(Collectors.toSet());
+
+        savedUser.getRoles().clear();
+
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
+                savedUser.getRoles().add(roleDao.getRoleByName(key));
+            }
+        }
+
+        userDao.saveUser(savedUser);
     }
 
     @Transactional
@@ -53,8 +80,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void saveNewUser(User user){
-        Role roleOfUser = roleDao.getRoleByName("ROLE_USER");
-        user.addRole(roleOfUser);
+        if(user.getRoles().isEmpty()) {
+            Role roleOfUser = roleDao.getRoleByName("ROLE_USER");
+            user.addRole(roleOfUser);
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
         userDao.saveUser(user);
     }
 

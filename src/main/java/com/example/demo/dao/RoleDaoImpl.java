@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -26,8 +27,20 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     public Role getRoleByName(String name) {
-        return entityManager.createQuery(
-                        "SELECT u from Role u WHERE u.name = :name", Role.class).
-                setParameter("name", name).getSingleResult();
+        try {
+            return entityManager.createQuery(
+                            "SELECT u from Role u WHERE u.name = :name", Role.class).
+                    setParameter("name", name).getSingleResult();
+        } catch (NoResultException e){
+            return null;
+        }
+    }
+
+    public void save(Role role){
+        if (role.getId() == null) {
+            entityManager.persist(role);
+        } else {
+            entityManager.merge(role);
+        }
     }
 }
