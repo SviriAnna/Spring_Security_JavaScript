@@ -18,8 +18,6 @@ public interface UserService {
     void saveUser(String id, User user, Map<String, String> form);
     void delete(Long id);
 
-    public void saveNewUser(User user);
-
     public HashSet<Role> getRolesList();
 
 }

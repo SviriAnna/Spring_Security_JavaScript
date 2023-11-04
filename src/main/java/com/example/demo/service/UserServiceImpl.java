@@ -83,18 +83,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByName(String username) { return userDao.getUserByName(username); }
 
-
-    @Override
-    @Transactional
-    public void saveNewUser(User user){
-        if(user.getRoles().isEmpty()) {
-            Role roleOfUser = roleDao.getRoleByName("ROLE_USER");
-            user.addRole(roleOfUser);
-            user.setPassword(encoder.encode(user.getPassword()));
-        }
-        userDao.saveUser(user);
-    }
-
     @Override
     public HashSet<Role> getRolesList(){
         return userDao.getRolesList();

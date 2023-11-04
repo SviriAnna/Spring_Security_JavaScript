@@ -13,9 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @EnableTransactionManagement
 @Component
@@ -32,6 +30,7 @@ public class AppInit implements ApplicationListener<ContextRefreshedEvent> {
     }
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        Map<String, String> mapOfRole = new HashMap<>();
         if (roleService.getRoleByName("ROLE_USER") == null) {
             Role userRole = new Role("ROLE_USER");
             roleService.save(userRole);
@@ -41,14 +40,18 @@ public class AppInit implements ApplicationListener<ContextRefreshedEvent> {
             roleService.save(adminRole);
         }
         if (userService.getUserByName("user") == null) {
-            User user = new User("user", "userName", "userLastname", 20, "user", Collections.singletonList(roleService.getRoleByName("ROLE_USER")));
+            User user = new User("user", "userName", "userLastname", 20, "user", new HashSet<Role>());
             user.setPassword(passwordEncoder.encode("user"));
-            userService.saveNewUser(user);
+            mapOfRole.clear();
+            mapOfRole.put("ROLE_USER", "user");
+            userService.saveUser("",user, mapOfRole);
         }
         if (userService.getUserByName("admin") == null) {
-            User admin = new User("admin", "adminName", "adminLastname", 20, "admin", Collections.singletonList(roleService.getRoleByName("ROLE_ADMIN")));
-            admin.setPassword(passwordEncoder.encode("admin"));
-            userService.saveNewUser(admin);
+            User admin = new User("admin", "adminName", "adminLastname", 20, "admin", new HashSet<Role>());
+
+            mapOfRole.clear();
+            mapOfRole.put("ROLE_ADMIN", "admin");
+            userService.saveUser("",admin, mapOfRole);
         }
     }
 
