@@ -63,6 +63,10 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        if (savedUser.getRoles().isEmpty()) {
+            savedUser.getRoles().add(roleDao.getRoleByName("ROLE_USER"));
+        }
+
         userDao.saveUser(savedUser);
     }
 
@@ -92,7 +96,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Role> getRolesList(){
+    public HashSet<Role> getRolesList(){
         return userDao.getRolesList();
     }
 

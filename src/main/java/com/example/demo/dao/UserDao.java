@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public interface UserDao {
     public User getUserByName(@Param("username") String username);
     public void saveUser(User user);
     public void delete(Long id);
-    public List<Role> getRolesList();
+    public HashSet<Role> getRolesList();
 
 
 }

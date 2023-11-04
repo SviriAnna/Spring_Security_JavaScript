@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +20,6 @@ public interface UserService {
 
     public void saveNewUser(User user);
 
-    public List<Role> getRolesList();
+    public HashSet<Role> getRolesList();
 
 }

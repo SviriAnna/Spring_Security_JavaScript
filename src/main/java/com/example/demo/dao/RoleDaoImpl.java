@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import aj.org.objectweb.asm.Handle;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.HashSet;
 import java.util.List;
 
 @Repository
@@ -22,8 +24,8 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public List<Role> getAllRoles() {
-        return entityManager.createQuery("FROM Role", Role.class).getResultList();
+    public HashSet<Role> getAllRoles() {
+        return new HashSet<Role>(entityManager.createQuery("FROM Role", Role.class).getResultList());
     }
 
     public Role getRoleByName(String name) {
