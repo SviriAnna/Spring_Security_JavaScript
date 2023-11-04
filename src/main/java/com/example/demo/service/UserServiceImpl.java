@@ -41,12 +41,15 @@ public class UserServiceImpl implements UserService {
             Long id = Long.valueOf(idString);
             savedUser = userDao.getUserById(id);
             savedUser.setId(id);
+            savedUser.setPassword(user.getPassword());
+        } else {
+            savedUser.setPassword(encoder.encode(user.getPassword()));
         }
         savedUser.setUsername(user.getUsername());
         savedUser.setName(user.getName());
         savedUser.setLastname(user.getLastname());
         savedUser.setAge(user.getAge());
-        savedUser.setPassword(user.getPassword());
+
 
         Set<String> roles = Arrays.stream(roleDao.getAllRoles().toArray())
                 .map(Object::toString)
