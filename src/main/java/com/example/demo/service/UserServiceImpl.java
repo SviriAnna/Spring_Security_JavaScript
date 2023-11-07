@@ -37,11 +37,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void saveUser(String idString, User user, Map<String, String> form) {
         User savedUser = new User();
-        if(!Objects.equals(idString, "")){
+        if(!Objects.equals(idString, "")) {
             Long id = Long.valueOf(idString);
             savedUser = userDao.getUserById(id);
             savedUser.setId(id);
-            savedUser.setPassword(user.getPassword());
+            if (Objects.equals(user.getPassword(), savedUser.getPassword())) {
+                savedUser.setPassword(user.getPassword());
+            } else {
+                savedUser.setPassword(encoder.encode(user.getPassword()));
+            }
         } else {
             savedUser.setPassword(encoder.encode(user.getPassword()));
         }
