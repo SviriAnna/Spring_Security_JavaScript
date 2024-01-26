@@ -21,9 +21,9 @@
 </div>
 
 <div class="row" align="center" sec:authorize="hasRole('USER')">
-<h3>
-  Данные вашей учетной записи
-</h3>
+  <h3>
+    Данные вашей учетной записи
+  </h3>
 </div>
 
 <table width="70%" cellspacing="0" cellpadding="4" border="1" align="center">
@@ -53,7 +53,7 @@
 
 </table>
 
-  <br>
+<br>
 <div align="center" sec:authorize="hasRole('ADMIN')">
   <p>
     Права доступа соответствуют
@@ -66,7 +66,7 @@
           type="button"
           th:onclick="|window.location.href='/admin'|" >Вернуться на главную страницу администратора</button>
 </div>
-  <br>
+<br>
 
 </body>
 </html>

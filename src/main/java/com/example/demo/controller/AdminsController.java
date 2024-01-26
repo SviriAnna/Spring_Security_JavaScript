@@ -62,7 +62,7 @@ public class AdminsController {
         model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAllRoles());
 
-        return "creature_and_edit_user";
+        return "new_or_edit_user";
     }
 
     @GetMapping("/new")
@@ -71,7 +71,7 @@ public class AdminsController {
         model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAllRoles());
 
-        return "creature_and_edit_user";
+        return "new_or_edit_user";
     }
 
     @GetMapping("/delete/id={id}")
