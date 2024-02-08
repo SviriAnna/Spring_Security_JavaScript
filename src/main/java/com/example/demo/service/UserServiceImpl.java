@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUser(String idString, User user, Map<String, String> form) {
+    public void saveUser(String idString, User user, ArrayList<String> form) {
         User savedUser = new User();
         if(!Objects.equals(idString, "")) {
             Long id = Long.valueOf(idString);
@@ -61,9 +61,9 @@ public class UserServiceImpl implements UserService {
 
         savedUser.getRoles().clear();
 
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                savedUser.getRoles().add(roleDao.getRoleByName(key));
+        for (String value : form) {
+            if (roles.contains(value)) {
+                savedUser.getRoles().add(roleDao.getRoleByName(value));
             }
         }
 

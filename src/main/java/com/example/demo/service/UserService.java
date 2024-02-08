@@ -6,16 +6,13 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public interface UserService {
     User getUserById(Long id);
     User getUserByName(String username);
     List<User> getAllUsers();
-    void saveUser(String id, User user, Map<String, String> form);
+    void saveUser(String id, User user, ArrayList<String> form);
     void delete(Long id);
 
     public HashSet<Role> getRolesList();

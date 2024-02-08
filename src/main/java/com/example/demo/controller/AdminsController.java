@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -31,24 +32,26 @@ public class AdminsController {
     }
 
     @GetMapping()
-    private String getAllUsers(@RequestParam(defaultValue = "0") Long id, Model model) {
-        if(id==0) {
-            model.addAttribute("users", userService.getAllUsers());
-        } else {
-            model.addAttribute("users", userService.getUserById(id));
-        }
-        return "allUsers";
+    private String getAllUsers(Model model, Principal principal) {
+
+            User user = new User();
+            model.addAttribute("newUser", user);
+            model.addAttribute("allRoles", roleService.getAllRoles());
+            model.addAttribute("allUsers", userService.getAllUsers());
+            model.addAttribute("user", userService.getUserByName(principal.getName()));
+
+        return "index";
     }
 
     @GetMapping("/id={id}")
     private String view(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "user";
+        return "index";
     }
 
     @PostMapping("/save")
     private String save(@ModelAttribute("user") User user,
-                        @RequestParam Map<String, String> form,
+                        @RequestParam("formOfRoles") ArrayList<String> form,
                         @RequestParam("id") String id) {
 
         userService.saveUser(id, user, form);
@@ -62,20 +65,11 @@ public class AdminsController {
         model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAllRoles());
 
-        return "new_or_edit_user";
+        return "index";
     }
 
-    @GetMapping("/new")
-    private String creatureUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roleService.getAllRoles());
-
-        return "new_or_edit_user";
-    }
-
-    @GetMapping("/delete/id={id}")
-    private String delete(@PathVariable Long id){
+    @GetMapping("/delete")
+    private String delete(@RequestParam("id") Long id){
         userService.delete(id);
         return "redirect:/admin";
     }

@@ -30,7 +30,7 @@ public class AppInit implements ApplicationListener<ContextRefreshedEvent> {
     }
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        Map<String, String> mapOfRole = new HashMap<>();
+        ArrayList<String> arrayOfRole = new ArrayList<>();
         if (roleService.getRoleByName("ROLE_USER") == null) {
             Role userRole = new Role("ROLE_USER");
             roleService.save(userRole);
@@ -42,16 +42,16 @@ public class AppInit implements ApplicationListener<ContextRefreshedEvent> {
         if (userService.getUserByName("user") == null) {
             User user = new User("user", "userName", "userLastname", 20, "user", new HashSet<Role>());
             user.setPassword(passwordEncoder.encode("user"));
-            mapOfRole.clear();
-            mapOfRole.put("ROLE_USER", "user");
-            userService.saveUser("",user, mapOfRole);
+            arrayOfRole.clear();
+            arrayOfRole.add("ROLE_USER");
+            userService.saveUser("",user, arrayOfRole);
         }
         if (userService.getUserByName("admin") == null) {
             User admin = new User("admin", "adminName", "adminLastname", 20, "admin", new HashSet<Role>());
 
-            mapOfRole.clear();
-            mapOfRole.put("ROLE_ADMIN", "admin");
-            userService.saveUser("",admin, mapOfRole);
+            arrayOfRole.clear();
+            arrayOfRole.add("ROLE_ADMIN");
+            userService.saveUser("",admin, arrayOfRole);
         }
     }
 
