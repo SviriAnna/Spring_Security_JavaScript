@@ -43,8 +43,8 @@ public class AdminsController {
         return "index";
     }
 
-    @GetMapping("/id={id}")
-    private String view(@PathVariable Long id, Model model) {
+    @GetMapping("/{id}")
+    private String view(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         return "index";
     }
@@ -59,17 +59,26 @@ public class AdminsController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit/id={id}")
-    private String editUser(@PathVariable(name = "id") Long id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
+    @GetMapping("/edit/{id}")
+    private String editUser(@PathVariable Long id, Model model) {
+        model.addAttribute("userOfEdit", userService.getUserById(id));
         model.addAttribute("roles", roleService.getAllRoles());
 
-        return "index";
+
+        return "redirect:/admin";
     }
 
-    @GetMapping("/delete")
-    private String delete(@RequestParam("id") Long id){
+    @PostMapping("/update/{id}")
+    private String updateUser(@PathVariable Long id, @ModelAttribute("userOfEdit") User userOfEdit, @RequestParam("formOfRoles") ArrayList<String> form, Model model){
+
+        userService.saveUser(String.valueOf(id), userOfEdit, form);
+
+
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/delete/{id}")
+    private String delete(@PathVariable Long id){
         userService.delete(id);
         return "redirect:/admin";
     }
