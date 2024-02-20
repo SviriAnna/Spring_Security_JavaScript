@@ -311,14 +311,14 @@
 
                                             <td>
                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                        th:data-bs-target="${'#delete'+user.id}"
+                                                        th:data-bs-target="${'#delete'+userOfEdit.id}"
                                                 >Delete
                                                 </button>
 
                                                 <!-- Modal window for delete user -->
 
-                                                <div class="modal" id="modalDelete" th:id="${'delete'+user.id}"
-                                                     th:value="${user.id}" tabindex="-1">
+                                                <div class="modal" id="modalDelete" th:id="${'delete'+userOfEdit.id}"
+                                                     th:value="${userOfEdit.id}" tabindex="-1">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -331,14 +331,14 @@
                                                                 <p>
                                                                 <div class="table deleteUserModal">
                                                                     <form th:method="GET"
-                                                                          th:action="@{admin/delete/{id}(id=${user.id})}"
-                                                                          th:object="${user}">
+                                                                          th:action="@{admin/delete/{id}(id=${userOfEdit.id})}"
+                                                                          th:object="${userOfEdit}">
                                                                         <div class="col-7">
                                                                             <label for="delete_id" class="form-label">
                                                                                 <b>ID</b>
                                                                             </label>
                                                                             <input type="text"
-                                                                                   th:value="${user.getId()}"
+                                                                                   th:value="*{id}"
                                                                                    class="form-control" id="delete_id"
                                                                                    disabled readonly>
                                                                         </div>
@@ -348,7 +348,7 @@
                                                                                 <b>Username</b>
                                                                             </label>
                                                                             <input type="text"
-                                                                                   th:value="${user.getUsername()}"
+                                                                                   th:value="*{username}"
                                                                                    class="form-control"
                                                                                    id="delete_username" disabled
                                                                                    readonly>
@@ -359,7 +359,7 @@
                                                                                 <b>Name</b>
                                                                             </label>
                                                                             <input type="text"
-                                                                                   th:value="${user.getName()}"
+                                                                                   th:value="*{name}"
                                                                                    class="form-control" id="delete_name"
                                                                                    required disabled readonly>
                                                                         </div>
@@ -370,7 +370,7 @@
                                                                                 <b>Last name</b>
                                                                             </label>
                                                                             <input type="text"
-                                                                                   th:value="${user.getLastname()}"
+                                                                                   th:value="*{lastname}"
                                                                                    class="form-control"
                                                                                    id="delete_lastname" disabled
                                                                                    readonly>
@@ -381,7 +381,7 @@
                                                                                 <b>Age</b>
                                                                             </label>
                                                                             <input type="number"
-                                                                                   th:value="${user.getAge()}"
+                                                                                   th:value="*{age}"
                                                                                    class="form-control"
                                                                                    id="delete_age" disabled readonly>
                                                                         </div>
