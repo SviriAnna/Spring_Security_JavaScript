@@ -51,10 +51,9 @@ public class AdminsController {
 
     @PostMapping("/save")
     private String save(@ModelAttribute("user") User user,
-                        @RequestParam("formOfRoles") ArrayList<String> form,
-                        @RequestParam("id") String id) {
+                        @RequestParam("formOfRoles") ArrayList<String> form) {
 
-        userService.saveUser(id, user, form);
+        userService.saveUser(user, form);
 
         return "redirect:/admin";
     }
@@ -64,16 +63,12 @@ public class AdminsController {
         model.addAttribute("userOfEdit", userService.getUserById(id));
         model.addAttribute("roles", roleService.getAllRoles());
 
-
         return "redirect:/admin";
     }
 
     @PostMapping("/update/{id}")
     private String updateUser(@PathVariable Long id, @ModelAttribute("userOfEdit") User userOfEdit, @RequestParam("formOfRoles") ArrayList<String> form, Model model){
-
-        userService.saveUser(String.valueOf(id), userOfEdit, form);
-
-
+        userService.updateUser(String.valueOf(id), userOfEdit, form);
         return "redirect:/admin";
     }
 

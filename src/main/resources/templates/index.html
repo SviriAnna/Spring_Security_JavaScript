@@ -285,10 +285,14 @@
                                                                                     required>
                                                                                 <option th:name="${allRoles[0].getName()}"
                                                                                         th:value="${allRoles[0].getName()}"
-                                                                                        th:text="${allRoles[0].getName()}+' '"></option>
+                                                                                        th:text="${allRoles[0].getName()}+' '"
+                                                                                        th:selected="${userOfEdit.roles.contains(allRoles[0].getName())}"
+                                                                                        ></option>
                                                                                 <option th:name="${allRoles[1].getName()}"
                                                                                         th:value="${allRoles[1].getName()}"
-                                                                                        th:text="${allRoles[1].getName()}+' '"></option>
+                                                                                        th:text="${allRoles[1].getName()}+' '"
+                                                                                        th:selected="${userOfEdit.roles.contains(allRoles[1].getName())}"
+                                                                                        ></option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -393,8 +397,8 @@
                                                                             <select class="form-select form-select-sm"
                                                                                     size="2" title="Role" multiple
                                                                                     id="delete_role" disabled readonly>
-                                                                                <option selected>ADMIN</option>
-                                                                                <option value="1">USER</option>
+                                                                                <option >ADMIN</option>
+                                                                                <option >USER</option>
                                                                             </select>
                                                                         </div>
                                                                 </div>

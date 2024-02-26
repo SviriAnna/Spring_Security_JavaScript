@@ -44,14 +44,14 @@ public class AppInit implements ApplicationListener<ContextRefreshedEvent> {
             user.setPassword(passwordEncoder.encode("user"));
             arrayOfRole.clear();
             arrayOfRole.add("ROLE_USER");
-            userService.saveUser("",user, arrayOfRole);
+            userService.saveUser(user, arrayOfRole);
         }
         if (userService.getUserByName("admin") == null) {
             User admin = new User("admin", "adminName", "adminLastname", 20, "admin", new HashSet<Role>());
 
             arrayOfRole.clear();
             arrayOfRole.add("ROLE_ADMIN");
-            userService.saveUser("",admin, arrayOfRole);
+            userService.saveUser(admin, arrayOfRole);
         }
     }
 

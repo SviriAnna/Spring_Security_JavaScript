@@ -35,43 +35,55 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUser(String idString, User user, ArrayList<String> form) {
-        User savedUser = new User();
-        if(!Objects.equals(idString, "")) {
-            Long id = Long.valueOf(idString);
-            savedUser = userDao.getUserById(id);
-            savedUser.setId(id);
-            if (Objects.equals(user.getPassword(), savedUser.getPassword())) {
-                savedUser.setPassword(user.getPassword());
-            } else {
-                savedUser.setPassword(encoder.encode(user.getPassword()));
-            }
-        } else {
-            savedUser.setPassword(encoder.encode(user.getPassword()));
-        }
-        savedUser.setUsername(user.getUsername());
-        savedUser.setName(user.getName());
-        savedUser.setLastname(user.getLastname());
-        savedUser.setAge(user.getAge());
+    public void updateUser(String idString, User user, ArrayList<String> form) {
 
+        Long id = Long.valueOf(idString);
+        user.setId(id);
+        String a = user.getPassword();
+        String b = (userDao.getUserById(id)).getPassword();
+
+        if(!a.equals(b)){
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
 
         Set<String> roles = Arrays.stream(roleDao.getAllRoles().toArray())
                 .map(Object::toString)
                 .collect(Collectors.toSet());
 
-        savedUser.getRoles().clear();
-
         for (String value : form) {
             if (roles.contains(value)) {
-                savedUser.getRoles().add(roleDao.getRoleByName(value));
+                user.getRoles().add(roleDao.getRoleByName(value));
             }
         }
 
-        if (savedUser.getRoles().isEmpty()) {
-            savedUser.getRoles().add(roleDao.getRoleByName("ROLE_USER"));
+        if (user.getRoles().isEmpty()) {
+            user.getRoles().add(roleDao.getRoleByName("ROLE_USER"));
         }
 
-        userDao.saveUser(savedUser);
+        userDao.updateUser(user);
+    }
+
+    @Override
+    @Transactional
+    public void saveUser(User user, ArrayList<String> form) {
+
+        user.setPassword(encoder.encode(user.getPassword()));
+
+        Set<String> roles = Arrays.stream(roleDao.getAllRoles().toArray())
+                .map(Object::toString)
+                .collect(Collectors.toSet());
+
+        for (String value : form) {
+            if (roles.contains(value)) {
+                user.getRoles().add(roleDao.getRoleByName(value));
+            }
+        }
+
+        if (user.getRoles().isEmpty()) {
+            user.getRoles().add(roleDao.getRoleByName("ROLE_USER"));
+        }
+
+        userDao.saveUser(user);
     }
 
     @Transactional
