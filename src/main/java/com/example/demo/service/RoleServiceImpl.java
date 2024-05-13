@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.HashSet;
 import java.util.List;
 
@@ -24,7 +25,11 @@ public class RoleServiceImpl implements RoleService{
     }
 
     public Role getRoleByName(String name) {
-        return roleDao.getRoleByName(name);
+        try {
+            return roleDao.getRoleByName(name);
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Transactional

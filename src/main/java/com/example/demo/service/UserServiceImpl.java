@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,10 +40,8 @@ public class UserServiceImpl implements UserService {
 
         Long id = Long.valueOf(idString);
         user.setId(id);
-        String a = user.getPassword();
-        String b = (userDao.getUserById(id)).getPassword();
 
-        if(!a.equals(b)){
+        if (!user.getPassword().equals((userDao.getUserById(id)).getPassword())) {
             user.setPassword(encoder.encode(user.getPassword()));
         }
 
@@ -92,15 +91,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long id){
+    public User getUserById(Long id) {
         return userDao.getUserById(id);
     }
 
     @Override
-    public User getUserByName(String username) { return userDao.getUserByName(username); }
+    public User getUserByName(String username) {
+        try {
+            return userDao.getUserByName(username);
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
     @Override
-    public HashSet<Role> getRolesList(){
+    public HashSet<Role> getRolesList() {
         return userDao.getRolesList();
     }
 

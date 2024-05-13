@@ -28,14 +28,10 @@ public class RoleDaoImpl implements RoleDao {
         return new HashSet<Role>(entityManager.createQuery("FROM Role", Role.class).getResultList());
     }
 
-    public Role getRoleByName(String name) {
-        try {
-            return entityManager.createQuery(
-                            "SELECT u from Role u WHERE u.name = :name", Role.class).
-                    setParameter("name", name).getSingleResult();
-        } catch (NoResultException e){
-            return null;
-        }
+    public Role getRoleByName(String name) throws NoResultException{
+        return entityManager.createQuery(
+                        "SELECT u from Role u WHERE u.name = :name", Role.class).
+                setParameter("name", name).getSingleResult();
     }
 
     public void save(Role role){

@@ -4,6 +4,7 @@ import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -27,7 +28,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void saveUser(User user) {
-            entityManager.persist(user);
+        entityManager.persist(user);
     }
 
     @Override
@@ -47,20 +48,16 @@ public class UserDaoImpl implements UserDao {
 
     @Query("Select u from User u left join fetch u.roles where u.username=:username")
     @Override
-    public User getUserByName(String username) {
-        try {
-            return entityManager.createQuery(
-                            "SELECT distinct u from User u LEFT JOIN FETCH u.roles WHERE u.username = :username", User.class).
-                    setParameter("username", username).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+    public User getUserByName(String username) throws NoResultException{
+        return entityManager.createQuery(
+                        "SELECT distinct u from User u LEFT JOIN FETCH u.roles WHERE u.username = :username", User.class).
+                setParameter("username", username).getSingleResult();
     }
 
     @Override
     public HashSet<Role> getRolesList() {
         return new HashSet<Role>(entityManager.createQuery(
-                        "SELECT r from Role r", Role.class).getResultList());
+                "SELECT r from Role r", Role.class).getResultList());
     }
 
 
