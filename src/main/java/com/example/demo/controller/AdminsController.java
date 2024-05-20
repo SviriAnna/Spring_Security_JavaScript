@@ -47,24 +47,16 @@ public class AdminsController {
         userService.saveUser(user);
     }
 
-    @GetMapping("/edit/{id}")
-    private String editUser(@PathVariable Long id, Model model) {
-        model.addAttribute("userOfEdit", userService.getUserById(id));
-        model.addAttribute("roles", roleService.getAllRoles());
-
-        return "redirect:/admin";
+    @PutMapping("/{id}")
+    private User updateUser(@RequestBody User user){
+        userService.updateUser(user);
+        return user;
     }
 
-    @PostMapping("/update/{id}")
-    private String updateUser(@PathVariable Long id, @ModelAttribute("userOfEdit") User userOfEdit, @RequestParam("formOfRoles") ArrayList<String> form, Model model){
-        userService.updateUser(String.valueOf(id), userOfEdit, form);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     private String delete(@PathVariable Long id){
         userService.delete(id);
-        return "redirect:/admin";
+        return "User with ID "+ id + " was deleted.";
     }
 
 }

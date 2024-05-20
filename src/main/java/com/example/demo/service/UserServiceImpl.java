@@ -36,30 +36,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(String idString, User user, ArrayList<String> form) {
-
-        Long id = Long.valueOf(idString);
-        user.setId(id);
-
-        if (!user.getPassword().equals((userDao.getUserById(id)).getPassword())) {
-            user.setPassword(encoder.encode(user.getPassword()));
-        }
-
-        Set<String> roles = Arrays.stream(roleDao.getAllRoles().toArray())
-                .map(Object::toString)
-                .collect(Collectors.toSet());
-
-        for (String value : form) {
-            if (roles.contains(value)) {
-                user.getRoles().add(roleDao.getRoleByName(value));
-            }
-        }
-
-        if (user.getRoles().isEmpty()) {
-            user.getRoles().add(roleDao.getRoleByName("ROLE_USER"));
-        }
-
-        userDao.updateUser(user);
+    public User updateUser(User user) {
+        return userDao.updateUser(user);
     }
 
     @Override

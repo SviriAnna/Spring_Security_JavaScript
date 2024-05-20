@@ -13,7 +13,7 @@ public interface UserService {
     User getUserByName(String username);
     List<User> getAllUsers();
     void saveUser(User user);
-    void updateUser(String id, User user, ArrayList<String> form);
+    User updateUser(User user);
     void delete(Long id);
 
     public HashSet<Role> getRolesList();
