@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.*;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminsController {
 
@@ -32,30 +32,19 @@ public class AdminsController {
     }
 
     @GetMapping()
-    private String getAllUsers(Model model, Principal principal) {
-
-            User user = new User();
-            model.addAttribute("newUser", user);
-            model.addAttribute("allRoles", roleService.getAllRoles());
-            model.addAttribute("allUsers", userService.getAllUsers());
-            model.addAttribute("user", userService.getUserByName(principal.getName()));
-
-        return "index";
+    private List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    private String view(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "index";
+    private User getUser(@PathVariable("id") Long id) {
+        return userService.getUserById(id);
     }
 
-    @PostMapping("/save")
-    private String save(@ModelAttribute("user") User user,
-                        @RequestParam("formOfRoles") ArrayList<String> form) {
-
-        userService.saveUser(user, form);
-
-        return "redirect:/admin";
+    @PostMapping()
+    private User save(@RequestBody User user) {
+        userService.saveUser(user);
+        return user;
     }
 
     @GetMapping("/edit/{id}")

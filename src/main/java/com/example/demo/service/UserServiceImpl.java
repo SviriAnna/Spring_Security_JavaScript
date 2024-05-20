@@ -64,19 +64,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUser(User user, ArrayList<String> form) {
+    public void saveUser(User user) {
 
         user.setPassword(encoder.encode(user.getPassword()));
-
-        Set<String> roles = Arrays.stream(roleDao.getAllRoles().toArray())
-                .map(Object::toString)
-                .collect(Collectors.toSet());
-
-        for (String value : form) {
-            if (roles.contains(value)) {
-                user.getRoles().add(roleDao.getRoleByName(value));
-            }
-        }
 
         if (user.getRoles().isEmpty()) {
             user.getRoles().add(roleDao.getRoleByName("ROLE_USER"));

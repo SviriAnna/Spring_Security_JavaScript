@@ -14,22 +14,20 @@ import java.util.Collection;
 import java.util.List;
 
 
-@Controller
-@RequestMapping("/user")
+@RestController
+@RequestMapping("/users")
 public class UsersController {
 
     @Autowired
     private final UserService userService;
 
-    private UsersController(UserService userService, RoleService roleService) {
+    private UsersController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping()
-    private String getUser(Principal principal, Model model) {
-            model.addAttribute("userP", userService.getUserByName(principal.getName()));
-
-        return "user";
+    @GetMapping("{id}")
+    private User getUser(@PathVariable("id") long id) {
+        return userService.getUserById(id);
     }
 
 }

@@ -12,7 +12,7 @@ public interface UserService {
     User getUserById(Long id);
     User getUserByName(String username);
     List<User> getAllUsers();
-    void saveUser(User user, ArrayList<String> form);
+    void saveUser(User user);
     void updateUser(String id, User user, ArrayList<String> form);
     void delete(Long id);
 
