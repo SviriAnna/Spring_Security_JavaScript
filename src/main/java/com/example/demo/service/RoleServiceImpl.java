@@ -20,7 +20,7 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public HashSet<Role> getAllRoles() {
+    public List<Role> getAllRoles() {
         return roleDao.getAllRoles();
     }
 

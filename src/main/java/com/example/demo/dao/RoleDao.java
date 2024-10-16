@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public interface RoleDao {
-    HashSet<Role> getAllRoles();
+    List<Role> getAllRoles();
 
     Role getRoleByName(String name);
 

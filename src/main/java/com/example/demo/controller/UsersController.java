@@ -5,6 +5,8 @@ import com.example.demo.model.User;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UsersController {
 
     @Autowired
@@ -25,9 +27,9 @@ public class UsersController {
         this.userService = userService;
     }
 
-    @GetMapping("{id}")
-    private User getUser(@PathVariable("id") long id) {
-        return userService.getUserById(id);
+    @GetMapping("/info")
+    public ResponseEntity<User> getUser(Principal principal) {
+        return new ResponseEntity<>(userService.getUserByName(principal.getName()).get(), HttpStatus.OK);
     }
 
 }

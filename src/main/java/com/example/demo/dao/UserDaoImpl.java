@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -48,10 +50,11 @@ public class UserDaoImpl implements UserDao {
 
     @Query("Select u from User u left join fetch u.roles where u.username=:username")
     @Override
-    public User getUserByName(String username) throws NoResultException{
-        return entityManager.createQuery(
+    public Optional<User> getUserByName(String username) throws NoResultException{
+        User user = entityManager.createQuery(
                         "SELECT distinct u from User u LEFT JOIN FETCH u.roles WHERE u.username = :username", User.class).
                 setParameter("username", username).getSingleResult();
+        return Optional.of(Optional.ofNullable(user).orElseThrow(() -> new EntityNotFoundException(String.format("User with username - '%s' not fount", username))));
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.*;
 
 public interface UserService {
     User getUserById(Long id);
-    User getUserByName(String username);
+    Optional<User> getUserByName(String username);
     List<User> getAllUsers();
     void saveUser(User user);
     User updateUser(User user);

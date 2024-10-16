@@ -14,7 +14,7 @@ public interface UserDao {
     public List<User> getAllUsers();
     public User getUserById(Long id);
     @Query("Select u from User u left join fetch u.roles where u.username=:username")
-    public User getUserByName(@Param("username") String username);
+    public Optional<User> getUserByName(@Param("username") String username);
     public void saveUser(User user);
     public User updateUser(User user);
     public void delete(Long id);
