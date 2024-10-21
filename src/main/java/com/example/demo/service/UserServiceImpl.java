@@ -5,6 +5,7 @@ import com.example.demo.dao.UserDao;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +16,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
+
     private final UserDao userDao;
 
-    @Autowired
     private final RoleDao roleDao;
 
-    @Autowired
     private final PasswordEncoder encoder;
 
     public UserServiceImpl(UserDao userDao, RoleDao roleDao, PasswordEncoder encoder) {

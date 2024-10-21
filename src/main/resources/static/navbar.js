@@ -1,5 +1,5 @@
 async function getNavInfo() {
-    fetch('http://localhost:8080/user/info')
+    fetch('http://localhost:8080/info')
         .then(res => res.json())
         .then(user => getInfo(user))
 }

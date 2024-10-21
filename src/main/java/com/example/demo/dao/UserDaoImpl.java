@@ -3,6 +3,7 @@ package com.example.demo.dao;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

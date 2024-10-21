@@ -23,7 +23,7 @@ function getRolesString(roles) {
 }
 
 // Вызов функции для пользователей
-getUserInfo('http://localhost:8080/user/info', 'userTable');
+getUserInfo('http://localhost:8080/info', 'userTable');
 
 // Вызов функции для администраторов
-getUserInfo('http://localhost:8080/api/admin/info', 'adminInfoTable');
+getUserInfo('http://localhost:8080/info', 'adminInfoTable');
